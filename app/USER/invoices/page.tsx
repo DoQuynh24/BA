@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import "./styleInvoice.css";
 import { motion } from "framer-motion";
 import io from "socket.io-client";
-import { orange } from "@mui/material/colors";
+import { Suspense } from "react"; // Thêm import Suspense
 
 const socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000");
 
@@ -48,7 +48,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
   </>
 );
 
-export default function Invoice() {
+function InvoiceContent() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +64,7 @@ export default function Invoice() {
     fullAddress: "",
   });
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"; 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
@@ -116,8 +116,8 @@ export default function Invoice() {
   }, [userPerID, searchParams, API_URL]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const term = e.target.value.toLowerCase();
-  setSearchTerm(term);
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
   };
 
   const handleViewDetails = async (invoiceID: string) => {
@@ -204,53 +204,53 @@ export default function Invoice() {
   };
 
   const handleUpdateAddress = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!selectedInvoice) return;
+    e.preventDefault();
+    if (!selectedInvoice) return;
 
-  try {
-    const response = await fetch(`${API_URL}/invoices/update`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        invoiceID: selectedInvoice.invoiceID,
-        receiverName: updatedAddress.receiverName,
-        receiverPhone: updatedAddress.receiverPhone,
-        fullAddress: updatedAddress.fullAddress,
-        paymentMethod: selectedInvoice.paymentMethod,
-        status: selectedInvoice.status,
-      }),
-    });
-    const result = await response.json();
-    if (!result.success) {
-      throw new Error(result.message || "Lỗi khi cập nhật địa chỉ");
-    }
-    setInvoices((prev) =>
-      prev.map((inv) =>
-        inv.invoiceID === selectedInvoice.invoiceID
+    try {
+      const response = await fetch(`${API_URL}/invoices/update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          invoiceID: selectedInvoice.invoiceID,
+          receiverName: updatedAddress.receiverName,
+          receiverPhone: updatedAddress.receiverPhone,
+          fullAddress: updatedAddress.fullAddress,
+          paymentMethod: selectedInvoice.paymentMethod,
+          status: selectedInvoice.status,
+        }),
+      });
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.message || "Lỗi khi cập nhật địa chỉ");
+      }
+      setInvoices((prev) =>
+        prev.map((inv) =>
+          inv.invoiceID === selectedInvoice.invoiceID
+            ? {
+                ...inv,
+                receiverName: updatedAddress.receiverName,
+                receiverPhone: updatedAddress.receiverPhone,
+                fullAddress: updatedAddress.fullAddress,
+              }
+            : inv
+        )
+      );
+      setSelectedInvoice((prev) =>
+        prev
           ? {
-              ...inv,
+              ...prev,
               receiverName: updatedAddress.receiverName,
               receiverPhone: updatedAddress.receiverPhone,
               fullAddress: updatedAddress.fullAddress,
             }
-          : inv
-      )
-    );
-    setSelectedInvoice((prev) =>
-      prev
-        ? {
-            ...prev,
-            receiverName: updatedAddress.receiverName,
-            receiverPhone: updatedAddress.receiverPhone,
-            fullAddress: updatedAddress.fullAddress,
-          }
-        : null
-    );
-    setIsEditingAddress(false);
-  } catch (err) {
-    setError(err instanceof Error ? err.message : "Lỗi khi cập nhật địa chỉ");
-  }
-};  
+          : null
+      );
+      setIsEditingAddress(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Lỗi khi cập nhật địa chỉ");
+    }
+  };
 
   const handleContactSeller = (invoice: Invoice) => {
     const storedUserInfo = localStorage.getItem("userInfo");
@@ -297,68 +297,68 @@ export default function Invoice() {
   };
 
   const filteredInvoices = invoices.filter((invoice) => {
-  if (activeTab === "Tất cả") {
+    if (activeTab === "Tất cả") {
+      return (
+        invoice.invoiceID.toLowerCase().includes(searchTerm) ||
+        (invoice.product_name && invoice.product_name.toLowerCase().includes(searchTerm)) ||
+        invoice.receiverName.toLowerCase().includes(searchTerm) ||
+        invoice.receiverPhone.toLowerCase().includes(searchTerm)
+      );
+    }
+    const tabStatus = Object.keys(statusToTabMap).find((key) => statusToTabMap[key] === activeTab);
     return (
-      invoice.invoiceID.toLowerCase().includes(searchTerm) ||
-      (invoice.product_name && invoice.product_name.toLowerCase().includes(searchTerm)) ||
-      invoice.receiverName.toLowerCase().includes(searchTerm) ||
-      invoice.receiverPhone.toLowerCase().includes(searchTerm)
-    );
-  }
-  const tabStatus = Object.keys(statusToTabMap).find((key) => statusToTabMap[key] === activeTab);
-  return (
-    tabStatus &&
-    invoice.status.toLowerCase() === tabStatus.toLowerCase() &&
-    (invoice.invoiceID.toLowerCase().includes(searchTerm) ||
-      (invoice.product_name && invoice.product_name.toLowerCase().includes(searchTerm)) ||
-      invoice.receiverName.toLowerCase().includes(searchTerm) ||
-      invoice.receiverPhone.toLowerCase().includes(searchTerm))
+      tabStatus &&
+      invoice.status.toLowerCase() === tabStatus.toLowerCase() &&
+      (invoice.invoiceID.toLowerCase().includes(searchTerm) ||
+        (invoice.product_name && invoice.product_name.toLowerCase().includes(searchTerm)) ||
+        invoice.receiverName.toLowerCase().includes(searchTerm) ||
+        invoice.receiverPhone.toLowerCase().includes(searchTerm))
     );
   });
 
   const handleRetryMoMoPayment = async (invoice: Invoice) => {
-  try {
-    const response = await fetch(`${API_URL}/invoices/${invoice.invoiceID}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const result = await response.json();
-    if (!result.success || !result.data[0]) {
-      throw new Error("Không thể lấy thông tin hóa đơn");
+    try {
+      const response = await fetch(`${API_URL}/invoices/${invoice.invoiceID}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const result = await response.json();
+      if (!result.success || !result.data[0]) {
+        throw new Error("Không thể lấy thông tin hóa đơn");
+      }
+      const invoiceData = result.data[0];
+
+      if (invoiceData.status !== "Chờ thanh toán") {
+        throw new Error("Hóa đơn không ở trạng thái Chờ thanh toán");
+      }
+
+      const uniqueOrderId = `${invoice.invoiceID}-${Date.now()}`; // Tạo orderId duy nhất
+
+      const momoResponse = await fetch(`${API_URL}/invoices/momo-payment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: uniqueOrderId,
+          amount: Math.round(invoiceData.totalPrice),
+          orderInfo: `Thanh toán đơn hàng ${invoice.invoiceID}`,
+          redirectUrl: `${window.location.origin}/USER/invoices?invoiceID=${invoice.invoiceID}`,
+          extraData: invoice.invoiceID, // Thêm extraData để lưu invoiceID
+        }),
+      });
+
+      const momoResult = await momoResponse.json();
+      if (momoResult.success && momoResult.payUrl) {
+        // Lưu thông tin hóa đơn tạm thời để xử lý sau khi thanh toán thành công
+        localStorage.setItem("pendingInvoiceID", invoice.invoiceID);
+        window.location.href = momoResult.payUrl;
+      } else {
+        throw new Error(momoResult.message || "Không thể tạo liên kết thanh toán MoMo");
+      }
+    } catch (err) {
+      console.error("Lỗi khi thử thanh toán lại:", err);
+      setError(err instanceof Error ? err.message : "Lỗi khi tạo liên kết thanh toán MoMo");
     }
-    const invoiceData = result.data[0];
-
-    if (invoiceData.status !== "Chờ thanh toán") {
-      throw new Error("Hóa đơn không ở trạng thái Chờ thanh toán");
-    }
-
-    const uniqueOrderId = `${invoice.invoiceID}-${Date.now()}`; // Tạo orderId duy nhất
-
-    const momoResponse = await fetch(`${API_URL}/invoices/momo-payment`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        orderId: uniqueOrderId,
-        amount: Math.round(invoiceData.totalPrice),
-        orderInfo: `Thanh toán đơn hàng ${invoice.invoiceID}`,
-        redirectUrl: `${window.location.origin}/USER/invoices?invoiceID=${invoice.invoiceID}`,
-        extraData: invoice.invoiceID, // Thêm extraData để lưu invoiceID
-      }),
-    });
-
-    const momoResult = await momoResponse.json();
-    if (momoResult.success && momoResult.payUrl) {
-      // Lưu thông tin hóa đơn tạm thời để xử lý sau khi thanh toán thành công
-      localStorage.setItem("pendingInvoiceID", invoice.invoiceID);
-      window.location.href = momoResult.payUrl;
-    } else {
-      throw new Error(momoResult.message || "Không thể tạo liên kết thanh toán MoMo");
-    }
-  } catch (err) {
-    console.error("Lỗi khi thử thanh toán lại:", err);
-    setError(err instanceof Error ? err.message : "Lỗi khi tạo liên kết thanh toán MoMo");
-  }
-};
+  };
 
   // Định nghĩa các variants cho Framer Motion
   const containerVariants = {
@@ -499,7 +499,7 @@ export default function Invoice() {
             initial="hidden"
             animate="visible"
           >
-            {["Tất cả", "Chờ xác nhận","Chờ thanh toán", "Đang lấy hàng", "Chờ giao hàng", "Hoàn thành", "Đã hủy", "Trả hàng/Hoàn tiền"].map(
+            {["Tất cả", "Chờ xác nhận", "Chờ thanh toán", "Đang lấy hàng", "Chờ giao hàng", "Hoàn thành", "Đã hủy", "Trả hàng/Hoàn tiền"].map(
               (tab) => (
                 <motion.li
                   key={tab}
@@ -687,7 +687,7 @@ export default function Invoice() {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            Thanh Toán 
+                            Thanh Toán
                           </motion.button>
                           <motion.button
                             className="btn-cancel"
@@ -718,203 +718,207 @@ export default function Invoice() {
                 </motion.div>
               ))}
             </motion.div>
-          )}    
+          )}
         </motion.div>
       </motion.div>
       {selectedInvoice && (
+        <motion.div
+          className="modal show"
+          variants={modalVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              closeDetails();
+            }
+          }}
+        >
+          <motion.div
+            className="modal-dialog"
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <motion.div
-              className="modal show"
+              className="modal-content"
               variants={modalVariants}
               initial="hidden"
               animate="visible"
-              exit="hidden"
-               onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                closeDetails();
-              }
-            }}
             >
+              <div className="modal-header">
+                <h5>Chi Tiết Đơn Hàng</h5>
+                <button className="close-btn" onClick={closeDetails}>
+                  ×
+                </button>
+              </div>
               <motion.div
-                className="modal-dialog"
-                variants={modalVariants}
+                className="modal-body"
+                variants={containerVariants}
                 initial="hidden"
                 animate="visible"
               >
-                <motion.div
-                  className="modal-content"
-                  variants={modalVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <div className="modal-header">
-                    <h5>Chi Tiết Đơn Hàng</h5>
-                    <button className="close-btn" onClick={closeDetails}>
-                      ×
-                    </button>
+                <div className="info-container">
+                  <div className="delivery-info">
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <p>Địa Chỉ Nhận Hàng</p>
+                      {["Chờ xác nhận", "Chờ thanh toán"].includes(selectedInvoice.status) && (
+                        <button
+                          className={`btn-edit-address ${isEditingAddress ? "btn-edit-address" : ""}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (isEditingAddress) {
+                              handleUpdateAddress(e);
+                            } else {
+                              setIsEditingAddress(true);
+                              setUpdatedAddress({
+                                receiverName: selectedInvoice.receiverName,
+                                receiverPhone: selectedInvoice.receiverPhone,
+                                fullAddress: selectedInvoice.fullAddress,
+                              });
+                            }
+                          }}
+                        >
+                          {isEditingAddress ? "Lưu" : "Sửa"}
+                        </button>
+                      )}
+                    </div>
+                    {isEditingAddress ? (
+                      <form className="edit-address-form">
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            placeholder="Tên người nhận"
+                            value={updatedAddress.receiverName}
+                            onChange={(e) =>
+                              setUpdatedAddress({ ...updatedAddress, receiverName: e.target.value })
+                            }
+                            required
+                          />
+                        </div>
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            placeholder="Số điện thoại"
+                            value={updatedAddress.receiverPhone}
+                            onChange={(e) =>
+                              setUpdatedAddress({ ...updatedAddress, receiverPhone: e.target.value })
+                            }
+                            required
+                          />
+                        </div>
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            placeholder="Địa chỉ"
+                            value={updatedAddress.fullAddress}
+                            onChange={(e) =>
+                              setUpdatedAddress({ ...updatedAddress, fullAddress: e.target.value })
+                            }
+                            required
+                          />
+                        </div>
+                        <div className="edit-address-buttons">
+                          <button
+                            type="button"
+                            className="btn-cancel-edit"
+                            onClick={() => setIsEditingAddress(false)}
+                          >
+                            Hủy
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <>
+                        <p>
+                          {selectedInvoice.receiverName} - {selectedInvoice.receiverPhone}
+                        </p>
+                        <p>{selectedInvoice.fullAddress}</p>
+                      </>
+                    )}
                   </div>
-                  <motion.div
-                    className="modal-body"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <div className="info-container">
-                      <div className="delivery-info">
-                        <div style={{ display: "flex", alignItems: "center",justifyContent:"space-between"}}>
-                          <p>Địa Chỉ Nhận Hàng</p>
-                          {["Chờ xác nhận", "Chờ thanh toán"].includes(selectedInvoice.status) && (
-                            <button
-                              className={`btn-edit-address ${isEditingAddress ? "btn-edit-address" : ""}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                if (isEditingAddress) {
-                                  handleUpdateAddress(e);
-                                } else {
-                                  setIsEditingAddress(true);
-                                  setUpdatedAddress({
-                                    receiverName: selectedInvoice.receiverName,
-                                    receiverPhone: selectedInvoice.receiverPhone,
-                                    fullAddress: selectedInvoice.fullAddress,
-                                  });
-                                }
-                              }}
-                            >
-                              {isEditingAddress ? "Lưu" : "Sửa"}
-                            </button>
-                          )}
-                        </div>
-                        {isEditingAddress ? (
-                          <form className="edit-address-form">
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                placeholder="Tên người nhận"
-                                value={updatedAddress.receiverName}
-                                onChange={(e) =>
-                                  setUpdatedAddress({ ...updatedAddress, receiverName: e.target.value })
-                                }
-                                required
-                              />
-                            </div>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                placeholder="Số điện thoại"
-                                value={updatedAddress.receiverPhone}
-                                onChange={(e) =>
-                                  setUpdatedAddress({ ...updatedAddress, receiverPhone: e.target.value })
-                                }
-                                required
-                              />
-                            </div>
-                            <div className="input-group">
-                              <input
-                                type="text"
-                                placeholder="Địa chỉ"
-                                value={updatedAddress.fullAddress}
-                                onChange={(e) =>
-                                  setUpdatedAddress({ ...updatedAddress, fullAddress: e.target.value })
-                                }
-                                required
-                              />
-                            </div>
-                            <div className="edit-address-buttons">
-                              <button
-                                type="button"
-                                className="btn-cancel-edit"
-                                onClick={() => setIsEditingAddress(false)}
-                              >
-                                Hủy
-                              </button>
-                            </div>
-                          </form>
-                        ) : (
-                          <>
-                            <p>{selectedInvoice.receiverName} - {selectedInvoice.receiverPhone}</p>
-                            <p>{selectedInvoice.fullAddress}</p>
-                          </>
-                        )}
-                      </div>
-                      <div className="divider"></div>
-                      <div className="order-status">
-                        <p>{selectedInvoice.status}</p>
-                        <p>Ngày đặt: {new Date(selectedInvoice.createdAt).toLocaleString("vi-VN")}</p>
-                      </div>
-                    </div>
+                  <div className="divider"></div>
+                  <div className="order-status">
+                    <p>{selectedInvoice.status}</p>
+                    <p>Ngày đặt: {new Date(selectedInvoice.createdAt).toLocaleString("vi-VN")}</p>
+                  </div>
+                </div>
 
-                    <div className="product-details-modal">
-                      <div className="product-info-modal">
-                        <Image
-                          src={
-                            selectedInvoice.imageURL
-                              ? `${API_URL}${selectedInvoice.imageURL}`
-                              : "/images/addImage.png"
-                          }
-                          alt={selectedInvoice.product_name || "Product"}
-                          width={80}
-                          height={80}
-                          className="modal-product-image"
-                        />
-                        <div className="text-info">
-                          <p>{selectedInvoice.product_name || "N/A"}</p>
-                          <p>Phân loại hàng: {selectedInvoice.material_name || "N/A"}</p>
-                          <p>x{selectedInvoice.quantity || 1}</p>
-                        </div>
-                        <div className="price-info">
-                          <p>
-                            ₫{(selectedInvoice.unitPrice || 0).toLocaleString("vi-VN")}
-                          </p>
-                        </div>
-                      </div>
+                <div className="product-details-modal">
+                  <div className="product-info-modal">
+                    <Image
+                      src={
+                        selectedInvoice.imageURL
+                          ? `${API_URL}${selectedInvoice.imageURL}`
+                          : "/images/addImage.png"
+                      }
+                      alt={selectedInvoice.product_name || "Product"}
+                      width={80}
+                      height={80}
+                      className="modal-product-image"
+                    />
+                    <div className="text-info">
+                      <p>{selectedInvoice.product_name || "N/A"}</p>
+                      <p>Phân loại hàng: {selectedInvoice.material_name || "N/A"}</p>
+                      <p>x{selectedInvoice.quantity || 1}</p>
                     </div>
+                    <div className="price-info">
+                      <p>₫{(selectedInvoice.unitPrice || 0).toLocaleString("vi-VN")}</p>
+                    </div>
+                  </div>
+                </div>
 
-                    <div className="price-details">
-                      <div className="price-row">
-                        <span>Tổng tiền hàng</span>
-                        <span>
-                          ₫
-                          {((selectedInvoice.unitPrice || 0) * (selectedInvoice.quantity || 1)).toLocaleString(
-                            "vi-VN"
-                          )}
-                        </span>
-                      </div>
-                      <div className="price-row">
-                        <span>Phí vận chuyển</span>
-                        <span>
-                          ₫{(selectedInvoice.shippingFee || 0).toLocaleString("vi-VN")}
-                        </span>
-                      </div>
-                      <div className="price-row" style={{ color:" #ee4d2d"}}>
-                        <span>Thành tiền</span>
-                        <span>
-                          ₫{(selectedInvoice.totalPrice || 0).toLocaleString("vi-VN")}
-                        </span>
-                      </div>
-                      <div className="price-row">
-                        <span>Phương thức thanh toán</span>
-                        <span>{selectedInvoice.paymentMethod}</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    className="modal-footer"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <motion.button
-                      className="btn-close-modal"
-                      onClick={closeDetails}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Đóng
-                    </motion.button>
-                  </motion.div>
-                </motion.div>
+                <div className="price-details">
+                  <div className="price-row">
+                    <span>Tổng tiền hàng</span>
+                    <span>
+                      ₫
+                      {(
+                        (selectedInvoice.unitPrice || 0) * (selectedInvoice.quantity || 1)
+                      ).toLocaleString("vi-VN")}
+                    </span>
+                  </div>
+                  <div className="price-row">
+                    <span>Phí vận chuyển</span>
+                    <span>₫{(selectedInvoice.shippingFee || 0).toLocaleString("vi-VN")}</span>
+                  </div>
+                  <div className="price-row" style={{ color: "#ee4d2d" }}>
+                    <span>Thành tiền</span>
+                    <span>₫{(selectedInvoice.totalPrice || 0).toLocaleString("vi-VN")}</span>
+                  </div>
+                  <div className="price-row">
+                    <span>Phương thức thanh toán</span>
+                    <span>{selectedInvoice.paymentMethod}</span>
+                  </div>
+                </div>
+              </motion.div>
+              <motion.div
+                className="modal-footer"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <motion.button
+                  className="btn-close-modal"
+                  onClick={closeDetails}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Đóng
+                </motion.button>
               </motion.div>
             </motion.div>
-          )}
+          </motion.div>
+        </motion.div>
+      )}
     </Layout>
+  );
+}
+
+export default function Invoice() {
+  return (
+    <Suspense fallback={<div>Đang tải...</div>}>
+      <InvoiceContent />
+    </Suspense>
   );
 }
