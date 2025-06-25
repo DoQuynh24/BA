@@ -1,0 +1,166 @@
+
+.auth-page {
+    height: 100vh;
+    background: linear-gradient(90deg, #e8d5ef, #f4e4f8);
+    display: block;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.auth-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(5px);
+    margin: 0px auto;
+    height: auto; 
+}
+
+h1 {
+    text-align: center;
+    color: #8a5da3;
+    margin-bottom: 10px;
+    font-family: 'Georgia', serif;
+    font-size: 45px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 100px;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #e0c3fc;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 8px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #6b4e71;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-button.active {
+    color: #ffffff;
+    background: #8a5da3;
+    border-radius: 10px 10px 0 0;
+}
+
+.tab-button:hover:not(.active) {
+    color: #8a5da3;
+}
+
+.input-group  {
+    margin-top: 15px ;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px 15px 8px 40px;
+    border: 2px solid #e0c3fc;
+    border-radius: 25px;
+    font-size: 15px;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #8a5da3;
+    box-shadow: 0 0 10px rgba(138, 93, 163, 0.2);
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    z-index: 1;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #8a5da3, #b583c9);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(138, 93, 163, 0.4);
+}
+
+.forgot-password {
+    text-align: right;
+    margin: 10px;
+
+}
+
+.forgot-password-link {
+    background: none;
+    border: none;
+    color: #8a5da3;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+    color: #6b4e71;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.terms-checkbox input {
+    margin-right: 8px;
+}
+
+.terms-checkbox label {
+    font-size: 14px;
+    color: #6b4e71;
+}
+
+.terms-checkbox a {
+    color: #8a5da3;
+    text-decoration: none;
+}
+
+.terms-checkbox a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-align: center;
+}

@@ -1,0 +1,276 @@
+#content {
+  width: 100%;
+  margin-top: 150px;
+}
+
+#details {
+  width: 80%;
+  height: 650px;
+  margin: 0px auto;
+  display: flex;
+}
+
+#details-left {
+  width: 28%;
+  height: 650px;
+  display: flex;
+  align-items: center;
+}
+
+.swiper-container {
+  width: 95%;
+  height: 90%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  width: 100%;
+}
+
+.thumb {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 95%;
+  border: 1px solid #f8dff6;
+}
+
+.thumb img {
+  border: 2px solid transparent;
+  transition: 0.3s;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb:hover img {
+  border-color: #f8dff6;
+  transform: scale(1.05);
+}
+
+#details-center {
+  width: 45%;
+  display: flex;
+  align-items: center;
+}
+
+.selected {
+  margin: 0px auto;
+}
+
+#details-right {
+  width: 32%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+}
+
+.name-product {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 30px;
+  color: #a64ca6;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.original-price {
+  font-size: 15px;
+  color: #666;
+  text-decoration: line-through;
+  margin-bottom: 15px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.material-container {
+  display: flex;
+  gap: 10px;
+}
+
+.material-box {
+  padding: 3px 8px;
+  color: black;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid #666;
+  font-weight: 400;
+}
+
+.material-box:hover {
+  border-color: #a64ca6;
+  transform: scale(1.05);
+}
+
+.material-box.selected {
+  border-color: #a64ca6;
+  font-weight: bold;
+  color: #a64ca6;
+}
+
+#description-container {
+  width: 100%;
+  max-height: 100px;
+  overflow-y: auto;
+  padding: 10px;
+  scrollbar-width: none;
+  margin-top: 10px;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.consult {
+  padding: 10px 15px;
+  border: 1px solid #888;
+  color: #a64ca6;
+  background: none;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+  border: 1px solid;
+  width: 50%;
+}
+
+.consult:hover {
+  background-color: #f6dff4;
+  color: #a64ca6;
+}
+
+.buy-now {
+  padding: 10px 15px;
+  background-color: #a64ca6;
+  color: white;
+  font-weight:500;
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+  width: 50%;
+}
+
+.buy-now:hover {
+  background-color: #a64ca6c1;
+}
+
+.buy-now:disabled {
+  background-color: #ff0000;
+  cursor: not-allowed;
+}
+
+.buy-now:disabled:hover {
+  background-color: #ff0000;
+}
+
+#other-1 {
+  width: 80%;
+  height: 250px;
+  margin: 0px auto;
+}
+
+.text-other {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 60px;
+  color: #a64ca6;
+}
+
+#other-detail {
+  justify-content: space-between;
+  display: flex;
+  padding: 8px 80px;
+  cursor: pointer;
+}
+
+#other-2 {
+  width: 100%;
+  text-align: center;
+  margin: 15px auto;
+}
+
+#content-2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+#content-2.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.new {
+  position: relative;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.new.grid {
+  width: 100%;
+}
+
+.heart-icon1 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.new img {
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.product-info {
+  margin-top: 10px;
+}
+
+.product-name {
+  font-size: 17px;
+  color: #333;
+  margin: 5px 0;
+}
+
+.product-price {
+  font-size: 16px;
+  color: #a64ca6;
+  font-weight: bold;
+}
+

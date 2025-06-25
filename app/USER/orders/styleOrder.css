@@ -1,0 +1,463 @@
+#content-order{
+  margin-top: 180px;
+}
+.order-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 30px 0;
+  text-transform: uppercase;
+}
+
+.order-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 30px;
+}
+
+.order-section {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e5e5;
+}
+
+.order-product-info {
+  flex: 1;
+}
+
+.order-customer-info {
+  flex: 2;
+}
+
+.section-title {
+  font-size: 16px;
+  color: #333;
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.product-details {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.product-image {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.product-info {
+  flex: 1;
+}
+
+.product-name {
+  font-size: 18px;
+  /* font-weight: 600; */
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-detail {
+  font-size: 15px;
+  color: #555;
+  margin: 5px 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #ff4d4f;
+  outline: none;
+
+}
+
+.form-group select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.form-group .required {
+  color: #ff4d4f;
+}
+
+.payment-methods {
+  margin-top: 20px;
+}
+
+.payment-label {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.payment-options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 0 auto;
+  width: 300px;
+}
+
+.payment-option p {
+  text-align: center;
+}
+
+.payment-option.selected {
+  font-weight: bold;
+  border-color: #4CAF50; /* Thêm viền xanh khi chọn */
+}
+
+.payment-option .status {
+  font-size: 12px;
+  color: gray;
+  text-align: center; /* Căn giữa trạng thái */
+}
+
+.payment-option.selected .status {
+  color: green;
+}
+
+.payment-option {
+  width: 100px;
+  height: 80px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+ 
+}
+
+
+.payment-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.payment-option img {
+  max-width: 50%;
+  height: auto;
+  margin-bottom: 5px;
+}
+
+.payment-option p {
+  font-size: 10px;
+}
+
+.payment-option .status {
+  font-size: 12px;
+  color: #888;
+}
+
+
+.error-message {
+  color: #ff4d4f;
+  text-align: center;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.confirm-order-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #A64CA6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+.confirm-order-btn:hover {
+  background-color: green;
+}
+
+/* QR Code Popup */
+.qr-code-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1102;
+}
+
+.qr-code-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.qr-code-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.qr-code-content p {
+  font-size: 14px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.qr-code-image {
+  margin: 20px 0;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.qr-code-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.qr-confirm-btn {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.qr-confirm-btn:hover {
+  background-color: #45a049;
+}
+
+.qr-cancel-btn {
+  padding: 10px 20px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.qr-cancel-btn:hover {
+  background-color: #e63946;
+}
+
+/* Animation cho popup */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.success-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.checkmark {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #4caf50;
+  stroke-miterlimit: 10;
+  margin: 10px auto;
+  box-shadow: inset 0px 0px 0px #4caf50;
+  animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+}
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #4caf50;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.quantity-control button {
+  width: 30px;
+  height: 30px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.quantity-control span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.total-section {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.total-section p {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 0;
+}
+
+.total-section .total-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #4caf50;
+  }
+}
+
+.success-animation p {
+  color: #4caf50;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4caf50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-overlay p {
+  color: white;
+  margin-top: 10px;
+}
